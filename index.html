@@ -1,192 +1,341 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#171326">
-  <title>النهار؟ ✨</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
-    :root{--bg:#100e1c;--panel:#1b182b;--muted:#aaa5bd;--pink:#ff83b7;--pink2:#ffb5d2;--cream:#fff6f8;--line:#ffffff18}
-    *{box-sizing:border-box}
-    body{margin:0;min-height:100svh;background:radial-gradient(ellipse at 15% 5%,#633b68 0,transparent 34%),radial-gradient(ellipse at 90% 90%,#34305d 0,transparent 35%),var(--bg);color:#fff;font-family:'Cairo',system-ui,sans-serif;display:flex;justify-content:center;overflow-x:hidden}
-    body:before,body:after{content:"✦";position:fixed;color:#ffc1d9;opacity:.45;font-size:22px;pointer-events:none}
-    body:before{top:12%;left:8%}body:after{right:9%;bottom:13%;font-size:30px}
-    .app{width:min(100%,480px);min-height:100svh;padding:22px 18px 28px;display:flex;flex-direction:column;position:relative}
-    .top{display:flex;align-items:center;justify-content:space-between;color:#d7cde5;font-size:12px;margin-bottom:18px}
-    .brand{letter-spacing:1px;font-weight:800;color:var(--pink2)}
-    .progress{height:4px;background:#ffffff16;border-radius:20px;overflow:hidden;margin-bottom:25px}
-    .bar{height:100%;width:20%;background:linear-gradient(90deg,var(--pink),#ffd1df);border-radius:20px;transition:width .3s}
-    .screen{display:none;flex:1;animation:in .35s ease}
-    .screen.active{display:flex;flex-direction:column}
-    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .eyebrow{color:var(--pink2);font-size:12px;font-weight:700;letter-spacing:1px;margin:8px 0}
-    h1{font-size:clamp(29px,8vw,40px);line-height:1.45;margin:4px 0 10px;font-weight:900}
-    h2{font-size:25px;line-height:1.5;margin:4px 0 8px}
-    p{color:#c5bfd2;line-height:2;margin:4px 0 20px;font-size:14px}
-    .hero{margin:auto 0; text-align:center}
-    .orb{width:150px;height:150px;border-radius:48px;margin:0 auto 24px;display:grid;place-items:center;background:linear-gradient(145deg,#ffb9d4,#bd85c8);box-shadow:0 20px 65px #ff83b733;transform:rotate(-8deg);font-size:70px}
-    .orb span{transform:rotate(8deg)}
-    .btn{border:0;width:100%;border-radius:18px;padding:15px 18px;background:linear-gradient(100deg,#ff8fbd,#ffc1d5);color:#32182b;font:800 15px 'Cairo',sans-serif;cursor:pointer;box-shadow:0 10px 28px #ff83b72b;transition:.2s}
-    .btn:active{transform:scale(.98)}
-    .btn.secondary{background:#ffffff10;color:#fff;border:1px solid var(--line);box-shadow:none}
-    .btn:disabled{opacity:.4;cursor:not-allowed}
-    .actions{margin-top:auto;padding-top:22px;display:grid;gap:10px}
-    .field{margin:14px 0 18px}
-    label{display:block;font-size:13px;color:#f2dbe6;margin-bottom:8px;font-weight:700}
-    input{width:100%;border:1px solid #ffffff22;background:#ffffff0c;color:#fff;border-radius:16px;padding:15px;font:600 15px 'Cairo',sans-serif;outline:none;color-scheme:dark}
-    input:focus{border-color:var(--pink)}
-    .note{font-size:11px;color:#918ba5;margin-top:8px}
-    .quote{border:1px solid #ffffff1c;background:linear-gradient(145deg,#ffffff12,#ffffff06);padding:24px 20px;border-radius:24px;margin:24px 0;text-align:center}
-    .quote .heart{font-size:34px;margin-bottom:8px}
-    .quote p{font-size:16px;color:#f4e8ef;margin:0}
-    .food-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0 20px}
-    .food{border:2px solid transparent;border-radius:19px;overflow:hidden;background:#ffffff0c;text-align:right;cursor:pointer;padding:0;color:#fff;font-family:inherit;position:relative}
-    .food img{width:100%;height:118px;object-fit:cover;display:block;background:#393044}
-    .food .food-info{padding:9px 11px 11px}
-    .food strong{display:block;font-size:14px}
-    .food small{color:#bcb4c8;font-size:11px}
-    .food.selected{border-color:var(--pink);background:#ff83b718;box-shadow:0 0 0 3px #ff83b71c}
-    .food.selected:after{content:"✓";position:absolute;top:8px;left:8px;background:var(--pink);color:#32182b;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;font-weight:900}
-    .summary{border:1px solid #ffffff20;background:#ffffff0b;border-radius:20px;padding:16px;margin:18px 0}
-    .summary-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #ffffff12;font-size:13px}
-    .summary-row:last-child{border:0}.summary-row span:first-child{color:#aaa5bd}.summary-row strong{text-align:left;color:#ffe1ec}
-    .success-icon{font-size:48px;margin:6px 0}
-    .tiny{font-size:11px;color:#9690a7;text-align:center;line-height:1.8;margin-top:12px}
-    .ig{display:flex;align-items:center;justify-content:center;gap:8px}
-    .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);background:#fff;color:#2b2030;border-radius:14px;padding:10px 16px;font-size:12px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;z-index:5;white-space:nowrap}
-    .toast.show{opacity:1;transform:translate(-50%,0)}
-    @media(max-height:720px){.orb{width:115px;height:115px;font-size:55px;margin-bottom:15px}.food img{height:95px}.app{padding-top:14px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fff8f7">
+<title>A LITTLE PLAN — FIRAS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+:root{
+--bg:#fff8f7;--panel:#fffdfc;--muted:#8e7b83;
+--pink:#df78a0;--pink2:#b85e83;--cream:#fff6f0;--line:#ead9df;
+}
+*{box-sizing:border-box}
+body{
+margin:0;min-height:100svh;
+background:
+radial-gradient(ellipse at 8% 8%,#f8dce7 0,transparent 34%),
+radial-gradient(ellipse at 94% 82%,#f9e8d8 0,transparent 32%),
+linear-gradient(145deg,#fffaf8,#fff3f6 58%,#fff9f2);
+color:#392b33;font-family:'Cairo',sans-serif;
+display:flex;justify-content:center;overflow-x:hidden
+}
+body:before,body:after{
+content:"✦";position:fixed;color:#d98aa8;opacity:.28;
+font-size:22px;pointer-events:none
+}
+body:before{top:12%;left:8%}
+body:after{right:9%;bottom:13%;font-size:30px}
+.app{
+width:min(100%,500px);min-height:100svh;padding:24px 20px 30px;
+display:flex;flex-direction:column;position:relative
+}
+.top{display:flex;align-items:center;justify-content:space-between;color:#8c7781;font-size:12px;margin-bottom:20px}
+.brand{letter-spacing:1.5px;font-weight:800;color:#b85e83}
+.progress{height:5px;background:#eadde2;border-radius:20px;overflow:hidden;margin-bottom:25px}
+.bar{height:100%;width:20%;background:linear-gradient(90deg,#d9789d,#edb4c7,#d9a77f);border-radius:20px;transition:width .3s}
+.screen{display:none;flex:1;animation:in .35s ease}
+.screen.active{display:flex;flex-direction:column;animation:luxuryIn .42s cubic-bezier(.2,.75,.25,1)}
+@keyframes luxuryIn{from{opacity:0;transform:translateY(14px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+.eyebrow{color:#b45d80;font-size:12px;font-weight:700;letter-spacing:1px;margin:8px 0}
+h1{font-size:clamp(29px,8vw,40px);line-height:1.45;margin:4px 0 10px;font-weight:900;color:#392b33}
+h2{font-size:25px;line-height:1.5;margin:4px 0 8px;color:#392b33}
+p{color:#806f77;line-height:2;margin:4px 0 20px;font-size:14px}
+.hero{margin:auto 0;text-align:center}
+.orb{
+width:154px;height:154px;border-radius:50px;margin:0 auto 24px;
+display:grid;place-items:center;
+background:linear-gradient(145deg,#f9dce7,#f3c8d7 55%,#f4dfd0);
+box-shadow:0 18px 48px #c77b9830,inset 0 2px 8px #ffffffb0;
+border:1px solid #fff9;transform:rotate(-8deg);font-size:70px
+}
+.orb span{transform:rotate(8deg)}
+.btn{
+border:0;width:100%;border-radius:18px;padding:15px 18px;
+background:linear-gradient(105deg,#d9789d,#e9a8bd);
+color:#fff;font:800 15px 'Cairo',sans-serif;cursor:pointer;
+box-shadow:0 10px 25px #c8759530,inset 0 1px 0 #ffffff65;
+transition:transform .2s,box-shadow .2s
+}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn.secondary{
+background:#ffffffb8;color:#886879;border:1px solid #ead5de;box-shadow:0 5px 16px #8f62700b
+}
+.btn:disabled{background:#e9dce1;color:#a9979f;box-shadow:none;opacity:.5}
+.actions{margin-top:auto;padding-top:22px;display:grid;gap:10px}
+.field{margin:12px 0 16px}
+label{display:block;font-size:13px;color:#705663;margin-bottom:8px;font-weight:700}
+input{
+width:100%;border:1px solid #ead8df;background:#ffffffc9;color:#44343d;
+border-radius:15px;padding:15px;font:600 15px 'Cairo',sans-serif;
+outline:none;box-shadow:0 4px 14px #8b5e7009;color-scheme:light
+}
+input:focus{border-color:#d9789d;box-shadow:0 0 0 3px #d9789d20}
+.note{font-size:11px;color:#a08e96;margin-top:8px}
+.quote{
+border:1px solid #f0dce4;background:linear-gradient(145deg,#fffefd,#fff3f6);
+box-shadow:0 12px 32px #a86d8010;padding:24px 20px;border-radius:26px;
+margin:24px 0;text-align:center
+}
+.quote .heart{font-size:34px;margin-bottom:8px}
+.quote p{font-size:16px;color:#735b67;margin:0}
+.food-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:15px 0 20px}
+.food{
+border:2px solid #f0e2e6;border-radius:20px;overflow:hidden;
+background:#fffdfc;text-align:right;cursor:pointer;padding:0;
+color:#49343f;font-family:inherit;position:relative;
+box-shadow:0 8px 22px #8053650c;transition:.2s
+}
+.food img{width:100%;height:126px;object-fit:cover;display:block;background:#393044}
+.food .food-info{padding:10px 12px 12px}
+.food strong{display:block;font-size:14px;color:#49343f}
+.food small{color:#9a828d;font-size:11px}
+.food.selected{border-color:#d9789d;background:#fff7fa;box-shadow:0 0 0 3px #d9789d20,0 10px 25px #a85e7a12}
+.food.selected:after{
+content:"✓";position:absolute;top:8px;left:8px;background:#d9789d;color:#fff;
+width:25px;height:25px;border-radius:50%;display:grid;place-items:center;font-weight:900
+}
+.summary{
+border:1px solid #eedde3;background:linear-gradient(145deg,#fffefd,#fff5f7);
+box-shadow:0 10px 28px #8053650c;border-radius:22px;padding:16px;margin:18px 0
+}
+.summary-tools{
+display:flex;align-items:center;justify-content:space-between;gap:10px;
+padding-bottom:8px;margin-bottom:3px;border-bottom:1px solid #f1e5e9;
+color:#a65377;font-size:13px;font-weight:800
+}
+.copy-mini{border:1px solid #ead5de;background:#fff;color:#a65377;border-radius:11px;padding:6px 10px;font:700 11px 'Cairo',sans-serif;cursor:pointer}
+.summary-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #f1e5e9;font-size:13px}
+.summary-row:last-child{border:0}
+.summary-row span:first-child{color:#9a818d}
+.summary-row strong{text-align:left;color:#a65377}
+.success-icon{font-size:48px;margin:6px 0;filter:drop-shadow(0 5px 8px #d9789d35)}
+.tiny{font-size:11px;color:#9b858f;text-align:center;line-height:1.8;margin-top:12px}
+.ig{display:flex;align-items:center;justify-content:center;gap:8px}
+.profile-link{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font:800 14px 'Cairo',sans-serif}
+.toast{
+position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);
+background:#49343f;color:#fff;border-radius:14px;padding:10px 16px;
+font-size:12px;font-weight:700;opacity:0;transition:.25s;
+pointer-events:none;z-index:5;white-space:nowrap
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-height:720px){
+.app{padding-top:15px}
+.orb{width:118px;height:118px;font-size:55px;margin-bottom:16px}
+.food img{height:100px}
+}
+</style>
 </head>
 <body>
 <main class="app">
-  <div class="top"><span class="brand">A LITTLE PLAN ✦</span><span id="stepLabel">01 / 05</span></div>
-  <div class="progress"><div class="bar" id="bar"></div></div>
+<div class="top">
+<span class="brand">A LITTLE PLAN ✦ <span style="font-weight:500;letter-spacing:0;color:#a18a94">by FIRAS</span></span>
+<span id="stepLabel">01 / 05</span>
+</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
 
-  <section class="screen active" data-step="0">
-    <div class="hero">
-      <div class="orb"><span>💌</span></div>
-      <div class="eyebrow">عندي ليك اقتراح صغير</div>
-      <h1>واش رايك نتلاقاو<br>ونديرو جو شباب؟</h1>
-      <p>حضّرت ليك حاجة خفيفة وبنينة… اختاري التفاصيل كيما تحبي ♡</p>
-    </div>
-    <div class="actions"><button class="btn" onclick="go(1)">يلا نبداو ✨</button></div>
-  </section>
+<section class="screen active" data-step="0">
+<div class="hero">
+<div class="orb"><span>💌</span></div>
+<div class="eyebrow">عندي ليك اقتراح صغير</div>
+<h1>واش رايك نتلاقاو<br>ونديرو جو شباب؟</h1>
+<p>حضّرت ليك حاجة خفيفة وبنينة… اختاري التفاصيل كيما تحبي ♡</p>
+</div>
+<div class="actions"><button class="btn" onclick="go(1)">يلا نبداو ✨</button></div>
+</section>
 
-  <section class="screen" data-step="1">
-    <div class="eyebrow">01 — الوقت المناسب</div>
-    <h2>وقتاش يناسبك نتلاقاو؟</h2>
-    <p>اختاري النهار والوقت اللي يناسبوك، والباقي خلييه عليا.</p>
-    <div class="field"><label for="guestName">واش اسمك؟ 💗</label><input id="guestName" type="text" maxlength="40" placeholder="اكتبي اسمك هنا"></div>
-    <div class="field"><label for="meetDate">نهار اللقاء</label><input id="meetDate" type="date"></div>
-    <div class="field"><label for="meetTime">الوقت اللي يناسبك</label><input id="meetTime" type="time"></div>
-    <div class="note">نقدرو نبدلو الموعد، المهم يكون مناسب ليك.</div>
-    <div class="actions"><button class="btn" onclick="go(2)">التالي ♥</button><button class="btn secondary" onclick="go(0)">رجوع</button></div>
-  </section>
+<section class="screen" data-step="1">
+<div class="eyebrow">01 — الوقت المناسب</div>
+<h2>وقتاش يناسبك نتلاقاو؟</h2>
+<p>اختاري النهار والوقت اللي يناسبوك، والباقي خلييه عليا.</p>
+<div class="field"><label for="guestName">واش اسمك؟ 💗</label><input id="guestName" type="text" maxlength="40" placeholder="اكتبي اسمك هنا"></div>
+<div class="field"><label for="meetDate">نهار اللقاء</label><input id="meetDate" type="date"></div>
+<div class="field"><label for="meetTime">الوقت اللي يناسبك</label><input id="meetTime" type="time"></div>
+<div class="note">نقدرو نبدلو الموعد، المهم يكون مناسب ليك.</div>
+<div class="actions">
+<button class="btn" onclick="go(2)">التالي ♥</button>
+<button class="btn secondary" onclick="go(0)">رجوع</button>
+</div>
+</section>
 
-  <section class="screen" data-step="2">
-    <div class="eyebrow">02 — كلمة من القلب</div>
-    <h2>قبل ما نكملو…</h2>
-    <div class="quote"><div class="heart">🌷</div><p>كاين خرجات بسيطة بصح تبقى في البال… ضحكة من القلب ووقت شباب مع ناس عزيزين.</p></div>
-    <p style="text-align:center">إن شاء الله تكون خرجة هايلة وتخليك ديما تضحكي.</p>
-    <div class="actions"><button class="btn" onclick="go(3)">اختاري واش ناكلو 🍽️</button><button class="btn secondary" onclick="go(1)">رجوع</button></div>
-  </section>
+<section class="screen" data-step="2">
+<div class="eyebrow">02 — لحظة تستاهل نتوقفوا عندها</div>
+<h2>أجمل ما في الحياة… اللحظات اللي نعيشوها بصدق 💗</h2>
+<div class="quote">
+<div class="heart">🌷</div>
+<p>
+مرات نحسبوا بلي السعادة لازم تكون في الحاجات الكبيرة: سفر بعيد، هدية غالية، ولا مناسبة نستناوها من زمان… بصح الحقيقة أن أجمل اللحظات تقدر تبدأ بحاجة بسيطة بزاف.
+<br><br>
+قعدة هادئة، حديث يخرج من القلب، ضحكة تجي بلا حساب، ووجود إنسان ترتاح معاه وما تحتاجش تتصنّع قدّامو. هاذي هي التفاصيل الصغيرة اللي يمكن تمرّ في نهارها عادية، بصح تبقى ذكرى دافئة في القلب.
+<br><br>
+وكما يقولوا: «السعادة ليست في امتلاك كل شيء، بل في أن نعرف قيمة الأشياء الجميلة اللي عندنا». لهذا ما لازمش نستناو الظروف المثالية باش نفرحو؛ أحيانًا يكفي نعطيو للحظة فرصة، ونعيشوها بقلب صافي ونيّة مليحة.
+<br><br>
+نتمنى تكون هاذي الخرجة من اللحظات اللي نتفكروها بابتسامة… مش على خاطر وين رحنا ولا واش كلينا، بل على خاطر الوقت الجميل والضحكة الصادقة اللي تقاسمناها. ♡
+</p>
+</div>
+<p style="text-align:center">خلي دايمًا في حياتك مساحة للحظات البسيطة… لأنها مرات هي اللي تصنع أجمل الذكريات.</p>
+<div class="actions">
+<button class="btn" onclick="go(3)">اختاري واش ناكلو 🍽️</button>
+<button class="btn secondary" onclick="go(1)">رجوع</button>
+</div>
+</section>
 
-  <section class="screen" data-step="3">
-    <div class="eyebrow">03 — قائمة لذيذة</div>
-    <h2>واش تحبي ناكلو؟</h2>
-    <p>اختاري حاجة وحدة برك… نتي اللي تختاري 😋</p>
-    <div class="food-grid">
-      <button class="food" data-food="شواء" onclick="chooseFood(this)">
-        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=700&auto=format&fit=crop&q=85" alt="طبق شواء">
-        <div class="food-info"><strong>شواء 🍢</strong><small>شواء بنين</small></div>
-      </button>
-      <button class="food" data-food="شاورما" onclick="chooseFood(this)">
-        <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=700&auto=format&fit=crop&q=85" alt="تاكوس">
-        <div class="food-info"><strong>شاورما 🌯</strong><small>شاورما بنينة</small></div>
-      </button>
-      <button class="food" data-food="بيتزا" onclick="chooseFood(this)">
-        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700&auto=format&fit=crop&q=85" alt="بيتزا">
-        <div class="food-info"><strong>بيتزا 🍕</strong><small>دايمًا تجي في بلاصتها</small></div>
-      </button>
-      <button class="food" data-food="تاكوس" onclick="chooseFood(this)">
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&auto=format&fit=crop&q=85" alt="برغر">
-        <div class="food-info"><strong>تاكوس 🌮</strong><small>وجبة مليحة ومشبعة</small></div>
-      </button>
-    </div>
-    <div class="actions"><button class="btn" id="foodNext" disabled onclick="go(4)">هادي هي، نكملو ♥</button><button class="btn secondary" onclick="go(2)">رجوع</button></div>
-  </section>
+<section class="screen" data-step="3">
+<div class="eyebrow">03 — قائمة لذيذة</div>
+<h2>واش تحبي ناكلو؟</h2>
+<p>اختاري حاجة وحدة برك… نتي اللي تختاري 😋</p>
+<div class="food-grid">
+<button class="food" data-food="شواء" onclick="chooseFood(this)">
+<img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=700&auto=format&fit=crop&q=85" alt="شواء">
+<div class="food-info"><strong>شواء 🍢</strong><small>شواء بنين</small></div>
+</button>
+<button class="food" data-food="شاورما" onclick="chooseFood(this)">
+<img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=700&auto=format&fit=crop&q=85" alt="شاورما">
+<div class="food-info"><strong>شاورما 🌯</strong><small>شاورما بنينة</small></div>
+</button>
+<button class="food" data-food="بيتزا" onclick="chooseFood(this)">
+<img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700&auto=format&fit=crop&q=85" alt="بيتزا">
+<div class="food-info"><strong>بيتزا 🍕</strong><small>دايمًا تجي في بلاصتها</small></div>
+</button>
+<button class="food" data-food="تاكوس" onclick="chooseFood(this)">
+<img src="https://images.unsplash.com/photo-1568901346375-23c9450c58bd?w=700&auto=format&fit=crop&q=85" alt="تاكوس">
+<div class="food-info"><strong>تاكوس 🌮</strong><small>وجبة مليحة ومشبعة</small></div>
+</button>
+</div>
+<div class="actions">
+<button class="btn" id="foodNext" disabled onclick="go(4)">هادي هي، نكملو ♥</button>
+<button class="btn secondary" onclick="go(2)">رجوع</button>
+</div>
+</section>
 
-  <section class="screen" data-step="4">
-    <div class="eyebrow">04 — قربنا نكملو</div>
-    <div class="success-icon">💗</div>
-    <h2>يعطيك الصحة على اختيارك! 💗</h2>
-    <p>فرحتيني باختيارك، وإن شاء الله نتلاقاو على خير ونديرو جو مليح ونضحكو بزاف.</p>
-    <div class="summary">
-      <div class="summary-row"><span>اسمك</span><strong id="finalName">—</strong></div>
-      <div class="summary-row"><span>النهار</span><strong id="finalDate">—</strong></div>
-      <div class="summary-row"><span>الوقت</span><strong id="finalTime">—</strong></div>
-      <div class="summary-row"><span>واش ناكلو</span><strong id="finalFood">—</strong></div>
-    </div>
-    <div class="actions">
-      <button class="btn ig" onclick="shareChoice()">ابعثيلي اختيارك 💌 <span>↗</span></button>
-    </div>
-    <div class="tiny">كي تبعثيلي اختيارك، نكملو نتفاهمو على التفاصيل ♡</div>
-    <div class="actions" style="padding-top:12px"><button class="btn secondary" onclick="go(3)">تعديل الاختيار</button></div>
-  </section>
-  <div class="toast" id="toast">تم نسخ الرسالة ✨</div>
+<section class="screen" data-step="4">
+<div class="eyebrow">04 — قربنا نكملو</div>
+<div class="success-icon">💗</div>
+<h2>يعطيك الصحة على اختيارك! 💗</h2>
+<p>فرحتيني باختيارك، وإن شاء الله نتلاقاو على خير ونديرو جو مليح ونضحكو بزاف.</p>
+<div class="summary">
+<div class="summary-tools">
+<span>تفاصيل موعدنا</span>
+<button class="copy-mini" type="button" onclick="copySummary()">نسخ ⧉</button>
+</div>
+<div class="summary-row"><span>اسمك</span><strong id="finalName">—</strong></div>
+<div class="summary-row"><span>النهار</span><strong id="finalDate">—</strong></div>
+<div class="summary-row"><span>الوقت</span><strong id="finalTime">—</strong></div>
+<div class="summary-row"><span>واش ناكلو</span><strong id="finalFood">—</strong></div>
+</div>
+<div class="actions">
+<button class="btn ig" onclick="openInstagramDM()">ابعثيلي اختيارك في الشات 💌 <span>↗</span></button>
+</div>
+<div class="tiny">اختاري Instagram من قائمة المشاركة، ثم اختاري الشخص وابعثي الرسالة ♡</div>
+<div class="actions" style="padding-top:10px">
+<a class="btn secondary profile-link" href="https://www.instagram.com/x__firas__24__x/" target="_blank" rel="noopener">شوفي صفحتي على إنستغرام <span>◎</span></a>
+<button class="btn secondary" onclick="go(3)">تعديل الاختيار</button>
+</div>
+</section>
+
+<div class="toast" id="toast">تم نسخ الرسالة ✨</div>
 </main>
+
 <script>
-  let step=0, selectedFood='';
-  const screens=[...document.querySelectorAll('.screen')];
-  const bar=document.getElementById('bar'), stepLabel=document.getElementById('stepLabel');
-  function go(n){
-    if(n===2 && !document.getElementById('guestName').value.trim()){toast('اكتبي اسمك برك 💗');return}
-    if(n===2 && !document.getElementById('meetDate').value){toast('اختاري نهار اللقاء أولاً');return}
-    if(n===2 && !document.getElementById('meetTime').value){toast('اختاري وقت اللقاء أولاً');return}
-    if(n===4){
-      document.getElementById('finalName').textContent=document.getElementById('guestName').value.trim();
-      if(!selectedFood){toast('اختاري وجبة واحدة');return}
-      const d=document.getElementById('meetDate').value;
-      const t=document.getElementById('meetTime').value;
-      document.getElementById('finalDate').textContent=new Date(d+'T00:00:00').toLocaleDateString('ar-DZ',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-      document.getElementById('finalTime').textContent=t;
-      document.getElementById('finalFood').textContent=selectedFood;
-    }
-    step=n;screens.forEach((s,i)=>s.classList.toggle('active',i===n));
-    bar.style.width=([20,40,60,80,100][n])+'%';
-    stepLabel.textContent=String(n+1).padStart(2,'0')+' / 05';
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-  function chooseFood(el){
-    document.querySelectorAll('.food').forEach(x=>x.classList.remove('selected'));
-    el.classList.add('selected');selectedFood=el.dataset.food;
-    document.getElementById('foodNext').disabled=false;
-  }
-  function messageText(){
-    const d=document.getElementById('finalDate').textContent;
-    const t=document.getElementById('finalTime').textContent;
-    return `سلام FIRAS 💗\nأنا ${document.getElementById('guestName').value.trim()}، يعطيك الصحة على الدعوة، موافقة نتلاقاو!\n📅 النهار: ${d}\n🕒 الوقت: ${t}\n🍽️ واش ناكلو: ${selectedFood}\nإن شاء الله نديرو جو شباب ونضحكو بزاف!\nوفي الأخير: تأكلي الشعر 😂` ;
-  }
-  async function shareChoice(){
-    const msg=messageText();
-    if(navigator.share){
-      try{await navigator.share({title:'موعدنا؟',text:msg})}
-      catch(e){if(e.name!=='AbortError'){await copyFallback(msg)}}
-    } else {
-      await copyFallback(msg);
-    }
-  }
-  async function copyFallback(msg){
-    try{await navigator.clipboard.writeText(msg);toast('تنسخت الرسالة، ابعثيها في الشات 💗')}
-    catch(e){
-      const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();
-      toast('تنسخت الرسالة، ابعثيها في الشات 💗');
-    }
-  }
-  function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2300)}
-  const today=new Date();document.getElementById('meetDate').min=today.toISOString().slice(0,10);
+let step=0,selectedFood='';
+const screens=[...document.querySelectorAll('.screen')];
+const bar=document.getElementById('bar');
+const stepLabel=document.getElementById('stepLabel');
+
+function go(n){
+if(n===2 && !document.getElementById('guestName').value.trim()){
+toast('اكتبي اسمك برك 💗');return;
+}
+if(n===2 && !document.getElementById('meetDate').value){
+toast('اختاري نهار اللقاء أولاً');return;
+}
+if(n===2 && !document.getElementById('meetTime').value){
+toast('اختاري وقت اللقاء أولاً');return;
+}
+if(n===4){
+document.getElementById('finalName').textContent=document.getElementById('guestName').value.trim();
+if(!selectedFood){toast('اختاري وجبة واحدة');return;}
+const d=document.getElementById('meetDate').value;
+const t=document.getElementById('meetTime').value;
+document.getElementById('finalDate').textContent=new Date(d+'T00:00:00').toLocaleDateString('ar-DZ',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+document.getElementById('finalTime').textContent=t;
+document.getElementById('finalFood').textContent=selectedFood;
+}
+step=n;
+screens.forEach((s,i)=>s.classList.toggle('active',i===n));
+bar.style.width=([20,40,60,80,100][n])+'%';
+stepLabel.textContent=String(n+1).padStart(2,'0')+' / 05';
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function chooseFood(el){
+document.querySelectorAll('.food').forEach(x=>x.classList.remove('selected'));
+el.classList.add('selected');
+selectedFood=el.dataset.food;
+document.getElementById('foodNext').disabled=false;
+}
+
+function messageText(){
+const d=document.getElementById('finalDate').textContent;
+const t=document.getElementById('finalTime').textContent;
+return `سلام FIRAS 💗
+أنا ${document.getElementById('guestName').value.trim()}، يعطيك الصحة على الدعوة، موافقة نتلاقاو!
+📅 النهار: ${d}
+🕒 الوقت: ${t}
+🍽️ واش ناكلو: ${selectedFood}
+إن شاء الله نديرو جو شباب ونضحكو بزاف!
+وفي الأخير: تأكلي الشعر 😂`;
+}
+
+async function copyText(msg){
+try{
+await navigator.clipboard.writeText(msg);
+return true;
+}catch(e){
+try{
+const ta=document.createElement('textarea');
+ta.value=msg;ta.style.position='fixed';ta.style.opacity='0';
+document.body.appendChild(ta);ta.select();
+const ok=document.execCommand('copy');
+ta.remove();return ok;
+}catch(err){return false;}
+}
+}
+
+async function copySummary(){
+const ok=await copyText(messageText());
+toast(ok?'تنسخت الرسالة كاملة مع العبارة الأخيرة 💗':'ما قدرناش ننسخوها؛ جرّبي مرة أخرى');
+}
+
+async function openInstagramDM(){
+const msg=messageText();
+if(navigator.share){
+try{
+await navigator.share({
+title:'سلام FIRAS 💗',
+text:msg
+});
+}catch(err){
+if(err && err.name!=='AbortError'){
+toast('ما قدرناش نفتحوا المشاركة، عاودي المحاولة 💗');
+}
+}
+}else{
+const ok=await copyText(msg);
+toast(ok?'تنسخت الرسالة كاملة؛ افتحي Instagram والصقيها 💗':'ما قدرناش ننسخو الرسالة');
+}
+}
+
+function toast(s){
+const t=document.getElementById('toast');
+t.textContent=s;t.classList.add('show');
+setTimeout(()=>t.classList.remove('show'),2300);
+}
+
+const today=new Date();
+document.getElementById('meetDate').min=today.toISOString().slice(0,10);
 </script>
 </body>
-</html>
+  </html>
